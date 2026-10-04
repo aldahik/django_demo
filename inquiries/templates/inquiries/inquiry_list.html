@@ -1,0 +1,18 @@
+<h1>Customer Inquiries</h1>
+
+{% for inquiry in inquiries %}
+    <div>
+        <h2>
+            <a href="{% url 'get_inquiry' inquiry.id %}">
+                {{ inquiry.customer_name }}
+            </a>
+        </h2>
+        <p>{{ inquiry.email }}</p>
+        <p>{{ inquiry.description }}</p>
+        <p>Material: {{ inquiry.material }}</p>
+        <p>Quantity: {{ inquiry.quantity }}</p>
+        <p>Status: {{ inquiry.status }}</p>
+    </div>
+{% empty %}
+    <p>No inquiries yet.</p>
+{% endfor %}

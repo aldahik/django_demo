@@ -8,6 +8,4 @@ class InquiryForm(forms.ModelForm):
             "customer_name",
             "email",
             "description",
-            "quantity",
-            "material",
         ]

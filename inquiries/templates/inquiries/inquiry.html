@@ -2,7 +2,20 @@
 
 <p><strong>Email:</strong> {{ inquiry.email }}</p>
 <p><strong>Description:</strong> {{ inquiry.description }}</p>
-<p><strong>Material:</strong> {{ inquiry.material }}</p>
-<p><strong>Quantity:</strong> {{ inquiry.quantity }}</p>
 <p><strong>Status:</strong> {{ inquiry.status }}</p>
 <p><strong>Created:</strong> {{ inquiry.created_at }}</p>
+
+{% if analysis %}
+    <h2> AI Analysis </h2>
+
+    <p><strong>Material:</strong> {{ analysis.material }}</p>
+    <p><strong>Quantity:</strong> {{ analysis.quantity }}</p>
+    <p><strong>Height:</strong> {{ analysis.height_mm }}mm</p>
+    <p><strong>Width:</strong> {{ analysis.width_mm }}mm</p>
+    <p><strong>Thickness:</strong> {{ analysis.thickness_mm }}mm</p>
+
+
+
+{% else %}
+    <h2>AI analysis unavailable.</h2>
+{% endif %}

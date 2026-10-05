@@ -3,8 +3,7 @@ from .models import Inquiry
 from .models import InquiryAnalysis
 from .forms import InquiryForm
 from django.shortcuts import get_object_or_404
-from .services.ai import analyze_inquiry
-from decimal import Decimal
+from .services.analysis import process_inquiry_analysis
 
 
 def inquiry_list(request):
@@ -25,29 +24,7 @@ def create_inquiry(request):
 
         if form.is_valid():
             inquiry = form.save()
-
-            try:  
-                result = analyze_inquiry(inquiry.description)
-
-                analysis = InquiryAnalysis.objects.create(
-                    inquiry= inquiry,
-                    material= result.material,
-                    quantity= result.quantity,
-                    thickness_mm = (Decimal(str(result.thickness_mm))
-                                    if result.thickness_mm is not None else None),
-
-                    width_mm= (Decimal(str(result.width_mm))
-                            if result.width_mm is not None else None),
-                            
-                    height_mm= ((Decimal(str(result.height_mm)) 
-                                if result.height_mm is not None else None)),
-
-                    deadline= result.deadline,
-                )
-
-            except Exception as e:
-                print(f"AI analysis failed: {e}")
-
+            process_inquiry_analysis(inquiry)
             return redirect("get_inquiry", id=inquiry.id)
 
     return render(
@@ -56,7 +33,7 @@ def create_inquiry(request):
         {"form" : form}
     )
 
-def get_inquiry(request, id):
+def get_inquiry(request, id: int):
     inquiry = get_object_or_404(Inquiry, id=id)
     analysis = InquiryAnalysis.objects.filter(
         inquiry= inquiry

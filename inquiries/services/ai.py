@@ -44,4 +44,3 @@ def analyze_inquiry(description: str) -> AnalysisResult:
     raw_result = response.choices[0].message.content
 
     return AnalysisResult.model_validate_json(raw_result)
-

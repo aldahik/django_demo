@@ -12,7 +12,7 @@ api_key= os.environ["OPENROUTER_API_KEY"],
 
 def analyze_inquiry(description: str) -> AnalysisResult:
     response = client.chat.completions.create(
-        model= "qwen/qwen3.8-27b:free",
+        model= "nvidia/nemotron-3-super-120b-a12b:free",
         messages= [
             {
                 "role": "system",

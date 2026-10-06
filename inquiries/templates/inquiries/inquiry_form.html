@@ -1,9 +1,116 @@
-<h1>New Inquiry</h1>
+{% load static %}
 
-<form method="POST">
-    {% csrf_token %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{ form.as_p }}
+    <title>New Inquiry</title>
 
-    <button type="submit">Submit</button>
-</form>
+    <link
+        rel="stylesheet"
+        href="{% static 'inquiries/styles.css' %}"
+    >
+</head>
+
+<body>
+
+<div class="container small-container">
+
+    <a href="{% url 'inquiry_list' %}" class="back-link">
+        ← Back to inquiries
+    </a>
+
+
+    <div class="card">
+
+        <h1>New Customer Inquiry</h1>
+
+        <p class="subtitle">
+            Enter the customer's request below.
+            The description will automatically be analyzed
+            to extract manufacturing information.
+        </p>
+
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label for="{{ form.customer_name.id_for_label }}">
+                    Customer Name
+                </label>
+
+                {{ form.customer_name }}
+
+                {% for error in form.customer_name.errors %}
+                    <p class="error">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+
+            <div class="form-group">
+                <label for="{{ form.email.id_for_label }}">
+                    Email
+                </label>
+
+                {{ form.email }}
+
+                {% for error in form.email.errors %}
+                    <p class="error">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+
+            <div class="form-group">
+                <label for="{{ form.description.id_for_label }}">
+                    Request Description
+                </label>
+
+                {{ form.description }}
+
+                <p class="field-help">
+                    Example: I need 20 aluminium brackets,
+                    3 mm thick and 200 × 100 mm,
+                    by October 20.
+                </p>
+
+                {% for error in form.description.errors %}
+                    <p class="error">
+                        {{ error }}
+                    </p>
+                {% endfor %}
+            </div>
+
+
+            {% if form.non_field_errors %}
+
+                <div class="error-box">
+
+                    {% for error in form.non_field_errors %}
+                        <p>{{ error }}</p>
+                    {% endfor %}
+
+                </div>
+
+            {% endif %}
+
+
+            <button type="submit" class="button full-width">
+                Submit & Analyze
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

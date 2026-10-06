@@ -1,16 +1,96 @@
-<h1>Customer Inquiries</h1>
+{% load static %}
 
-{% for inquiry in inquiries %}
-    <div>
-        <h2>
-            <a href="{% url 'get_inquiry' inquiry.id %}">
-                {{ inquiry.customer_name }}
-            </a>
-        </h2>
-        <p>{{ inquiry.email }}</p>
-        <p>{{ inquiry.description }}</p>
-        <p>Status: {{ inquiry.status }}</p>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Customer Inquiries</title>
+
+    <link
+        rel="stylesheet"
+        href="{% static 'inquiries/styles.css' %}"
+    >
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="page-header">
+        <div>
+            <h1>Customer Inquiries</h1>
+            <p class="subtitle">
+                View and manage submitted manufacturing requests.
+            </p>
+        </div>
+
+        <a href="{% url 'create_inquiry' %}" class="button">
+            New Inquiry
+        </a>
     </div>
-{% empty %}
-    <p>No inquiries yet.</p>
-{% endfor %}
+
+
+    {% for inquiry in inquiries %}
+
+        <div class="card inquiry-card">
+
+            <div class="card-header">
+
+                <div>
+                    <h2>{{ inquiry.customer_name }}</h2>
+                    <p class="muted">
+                        {{ inquiry.email }}
+                    </p>
+                </div>
+
+                <span class="status">
+                    {{ inquiry.status }}
+                </span>
+
+            </div>
+
+
+            <p class="description-preview">
+                {{ inquiry.description|truncatechars:160 }}
+            </p>
+
+
+            <div class="card-footer">
+
+                <span class="muted">
+                    Submitted {{ inquiry.created_at }}
+                </span>
+
+                <a
+                    href="{% url 'get_inquiry' inquiry.id %}"
+                    class="secondary-button"
+                >
+                    View Inquiry
+                </a>
+
+            </div>
+
+        </div>
+
+    {% empty %}
+
+        <div class="card empty-state">
+            <h2>No inquiries yet</h2>
+
+            <p>
+                Create an inquiry to test the AI analysis workflow.
+            </p>
+
+            <a href="{% url 'create_inquiry' %}" class="button">
+                Create First Inquiry
+            </a>
+        </div>
+
+    {% endfor %}
+
+</div>
+
+</body>
+</html>

@@ -1,21 +1,42 @@
-<h1>{{ inquiry.customer_name }}</h1>
+{% load static %}
 
-<p><strong>Email:</strong> {{ inquiry.email }}</p>
-<p><strong>Description:</strong> {{ inquiry.description }}</p>
-<p><strong>Status:</strong> {{ inquiry.status }}</p>
-<p><strong>Created:</strong> {{ inquiry.created_at }}</p>
+<html>
+<head>
+    <title>Inquiry Details</title>
+    <link rel="stylesheet" href="{% static 'inquiries/styles.css' %}">
+</head>
 
-{% if analysis %}
-    <h2> AI Analysis </h2>
+<body>
+    <h1> Customer Inquiry </h1>
+    <div class= "container">
+        <div class="card">
+            <h2>Original Request</h2>
 
-    <p><strong>Material:</strong> {{ analysis.material }}</p>
-    <p><strong>Quantity:</strong> {{ analysis.quantity }}</p>
-    <p><strong>Height (mm):</strong> {{ analysis.height_mm }}</p>
-    <p><strong>Width (mm):</strong> {{ analysis.width_mm }}</p>
-    <p><strong>Thickness (mm):</strong> {{ analysis.thickness_mm }}</p>
+            <p><strong>Customer:</strong> {{ inquiry.customer_name }}</p>
+            <p><strong>Email:</strong> {{ inquiry.email }}</p>
+            <p><strong>Status:</strong> {{ inquiry.status }}</p>
+            <p><strong>Submitted:</strong> {{ inquiry.created_at }}</p>
 
+            <div class="request-text">
+                <strong>Description:</strong>
+                <p>{{ inquiry.description }}</p>
+            </div>
+        </div>
 
+        <div class="card">
+            <h2>AI Analysis</h2>
+            {% if analysis %}
+                <p><strong>Material:</strong> {{ analysis.material|default:"Not provided" }}</p>
+                <p><strong>Quantity:</strong> {{ analysis.quantity|default:"Not provided" }}</p>
+                <p><strong>Thickness:</strong> {{ analysis.thickness_mm|default:"Not provided" }}</p>
+                <p><strong>Width:</strong> {{ analysis.width_mm|default:"Not provided" }}</p>
+                <p><strong>Height:</strong> {{ analysis.height_mm|default:"Not provided" }}</p>
+                <p><strong>Deadline:</strong> {{ analysis.deadline|default:"Not provided" }}</p>
+            {% else %}
+                <p>Analysis unavailable. This inquiry requires manual review.</p>
+            {% endif %}
+        </div>
+    </div>
 
-{% else %}
-    <h2>AI analysis unavailable.</h2>
-{% endif %}
+</body>
+</html>
